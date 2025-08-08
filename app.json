@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Compare-App-Webview",
+    "name": "CompareApp",
     "slug": "Compare-App-Webview",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.leanqsd.CompareAppWebview"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +38,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b258db06-190e-4762-9c3c-a80f747c8230"
+      }
+    },
+    "owner": "leanqsd"
   }
 }
