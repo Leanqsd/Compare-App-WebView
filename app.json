@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "CompareApp",
+    "name": "Compare & Nourish",
     "slug": "Compare-App-Webview",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.jpg",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
