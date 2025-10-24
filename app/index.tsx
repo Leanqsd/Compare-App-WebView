@@ -1,3 +1,4 @@
+import NetInfo from '@react-native-community/netinfo';
 import * as Linking from 'expo-linking';
 import { SplashScreen, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -5,6 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BackHandler, StyleSheet } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
+import InternetError from './components/internet-error';
 import { BASE_URL, HOST_NAME, MOBILE_TYPE } from './constants';
 
 //keep splash screen visible while we fetch resources
@@ -20,6 +22,7 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   //edge to edge
   const insets = useSafeAreaInsets();
+  const [hasInternet, setHasInternet] = useState(true);
 
   const linkedUrl = Linking.useLinkingURL();
   const [uri, setUri] = useState<string>(`${BASE_URL}?movilType=${MOBILE_TYPE}`);
@@ -39,6 +42,9 @@ export default function App() {
       } catch (error){
         console.error("error al obtener la URL inicial", error);
         setUri(`${BASE_URL}?movilType=${MOBILE_TYPE}`);
+      } finally {
+        setAppIsReady(true);
+        SplashScreen.hideAsync();
       }
     };
 
@@ -56,24 +62,6 @@ export default function App() {
       }
     }
   }, [linkedUrl]);
-
-
-  //SplashSCreen Logic
-  useEffect(() => {
-    async function prepare() {
-      try {
-        
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        // Tell the application to render
-        setAppIsReady(true);
-        SplashScreen.hideAsync();
-      }
-    }
-
-    prepare();
-  }, [])
  
 
   //Allows to go back in webview
@@ -96,20 +84,30 @@ export default function App() {
     return () => goBackAction.remove();
   }, [canGoBackWeb, router]);
 
+  useEffect (() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setHasInternet((state.isConnected ?? false) && (state.isInternetReachable ?? false));
+    });
+    return () => unsubscribe()
+  }, []);
+
 
   return (
+    hasInternet ? (
     <SafeAreaProvider style={{ backgroundColor: '#ffffff', paddingTop: insets.top }} >
       <StatusBar style='dark' />
       <WebView
         ref={webviewRef}
-        source={{ uri: 'https://3d9518f9c5f0.ngrok-free.app' }} //dominio provisional usando ngrok para alojar la web
+        source={{ uri: 'https://225597c0021a.ngrok-free.app' }} //dominio provisional usando ngrok para alojar la web
         onNavigationStateChange={(navState) => setCanGoBackWeb(navState.canGoBack)}
         style={{ flex: 1 }}
         javaScriptEnabled={true}
 
       />
-    </SafeAreaProvider>
-  );
+    </SafeAreaProvider> )
+    : (
+    <InternetError></InternetError>
+  ));
 }
 
 const styles = StyleSheet.create({
