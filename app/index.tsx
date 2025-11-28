@@ -98,7 +98,7 @@ export default function App() {
       <StatusBar style='dark' />
       <WebView
         ref={webviewRef}
-        source={{ uri: 'https://225597c0021a.ngrok-free.app' }} //dominio provisional usando ngrok para alojar la web
+        source={{ uri: 'https://96fa49b199a9.ngrok-free.app' }} //dominio provisional usando ngrok para alojar la web
         onNavigationStateChange={(navState) => setCanGoBackWeb(navState.canGoBack)}
         style={{ flex: 1 }}
         javaScriptEnabled={true}
